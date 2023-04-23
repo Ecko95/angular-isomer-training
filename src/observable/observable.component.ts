@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule, JsonPipe } from '@angular/common';
+import { Component, OnInit, Pipe } from '@angular/core';
 import { filter, map, Observable, reduce, Subject } from 'rxjs';
+import { Post } from '../post';
 import { DataService } from '../data.service';
 @Component({
   standalone: true,
+  imports: [CommonModule, JsonPipe],
   selector: 'isma-observable',
   templateUrl: './observable.component.html',
   styleUrls: ['./observable.component.css'],
@@ -13,8 +16,8 @@ export class ObservableComponent implements OnInit {
   private buttonClickSubject = new Subject<any>();
   public buttonClick$: Observable<any> = this.buttonClickSubject.asObservable();
   public counter: number = 0;
-
-  public data: any;
+  public data: Post[];
+  private jsonPipe = new JsonPipe();
 
   ngOnInit() {
     // subscribe to the observable and log the emitted values
@@ -40,8 +43,10 @@ export class ObservableComponent implements OnInit {
 
   // get data from Data Service
   getData() {
-    this.dataService.getData().subscribe((data) => {
-      this.data = data;
+    this.dataService.getPosts().subscribe((posts) => {
+      // this.data = this.jsonPipe.transform(data);
+      this.data = posts;
+      console.table(this.data);
     });
   }
 }

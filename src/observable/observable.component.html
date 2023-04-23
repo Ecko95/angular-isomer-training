@@ -1,3 +1,8 @@
 <button (click)="handleClick()">Click me</button> <br /><br />
 <button (click)="getData()">Get Data</button>
-<div>{{ data }}</div>
+<!-- <div>{{ data | json }}</div> -->
+
+<div *ngFor="let post of data">
+  <h1>{{ post.title }}</h1>
+  <p>{{ post.body }}</p>
+</div>

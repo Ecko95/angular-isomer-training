@@ -9,7 +9,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'my-app',
   standalone: true,
-  imports: [CommonModule, ObservableComponent, HttpClientModule],
+  imports: [CommonModule, ObservableComponent, HttpClientModule,JsonPipe],
   template: `
     <isma-observable></isma-observable>
   `,
