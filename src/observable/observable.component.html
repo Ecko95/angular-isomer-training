@@ -1,8 +1,12 @@
 <button (click)="handleClick()">Click me</button> <br /><br />
 <button (click)="getData()">Get Data</button>
-<!-- <div>{{ data | json }}</div> -->
+<div>{{ data | json }}</div>
 
-<div *ngFor="let post of data">
-  <h1>{{ post.title }}</h1>
+<!-- <div *ngFor="let post of data">
+  <h1>{{ post.id }}</h1>
   <p>{{ post.body }}</p>
+</div> -->
+<div *ngFor="let photo of photos">
+  <h1>{{ photo.id }}</h1>
+  <img *ngIf="photo.thumbnailUrl" src="photo.thumbnailUrl" />
 </div>

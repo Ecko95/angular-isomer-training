@@ -1,8 +1,15 @@
 import { CommonModule, JsonPipe } from '@angular/common';
-import { Component, OnInit, Pipe } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  Pipe,
+} from '@angular/core';
 import { filter, map, Observable, reduce, Subject } from 'rxjs';
 import { Post } from '../post';
 import { DataService } from '../data.service';
+import { Photo } from '../photo';
 @Component({
   standalone: true,
   imports: [CommonModule, JsonPipe],
@@ -10,16 +17,26 @@ import { DataService } from '../data.service';
   templateUrl: './observable.component.html',
   styleUrls: ['./observable.component.css'],
 })
-export class ObservableComponent implements OnInit {
+export class ObservableComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private dataService: DataService) {}
 
   private buttonClickSubject = new Subject<any>();
   public buttonClick$: Observable<any> = this.buttonClickSubject.asObservable();
   public counter: number = 0;
   public data: Post[];
+  public photos: Photo[];
   private jsonPipe = new JsonPipe();
 
+  ngOnDestroy() {
+    this.buttonClickSubject.unsubscribe();
+  }
+
+  ngAfterViewInit() {
+    console.log('after view');
+  }
+
   ngOnInit() {
+    console.log('init');
     // subscribe to the observable and log the emitted values
     this.buttonClick$.subscribe((value) => {
       // console.log(value);
@@ -43,6 +60,11 @@ export class ObservableComponent implements OnInit {
 
   // get data from Data Service
   getData() {
+    this.dataService.getPhotos().subscribe((photos) => {
+      // this.data = this.jsonPipe.transform(data);
+      this.photos = photos;
+      console.table(this.photos);
+    });
     this.dataService.getPosts().subscribe((posts) => {
       // this.data = this.jsonPipe.transform(data);
       this.data = posts;
